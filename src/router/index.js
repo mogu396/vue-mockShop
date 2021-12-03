@@ -1,27 +1,57 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue';
+import VueRouter from "vue-router";
 
-Vue.use(VueRouter)
+const Home = () => import('../views/home/Home');
+const Category = () => import('../views/category/Category');
+const ShopCart=()=>import('../views/shopCart/ShopCart')
+const Profile = () => import('../views/profile/Profile');
+const Detail = () => import('../views/detail/Detail');
+const CategoryRightArea = () => import('../components/content/category/CategoryRightArea')
+
+
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
+    path: '',
+    redirect: '/home'
+  },
+  {
+    path: '/home',
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/category',
+    component: Category,
+    // 为什么加了这一行右侧就能显示呢？
+    redirect: '/category/all',
+    children: [{
+      name: 'CategoryRightArea',
+      path: ':title',
+      component: CategoryRightArea
+    }]
+    // children: [{
+    //   name:'CategoryRightArea',
+    //   path: '/category/:title',
+    //   component:CategoryRightArea
+    // }]
+  },
+  {
+    path: '/shopcart',
+    component: ShopCart
+  },
+  {
+    path: '/profile',
+    component: Profile
+  },
+  {
+    path: '/detail',
+    component: Detail
+  },
 ]
 
 const router = new VueRouter({
   routes
-})
+});
 
-export default router
+export default router;
